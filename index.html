@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Log In | Form</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <form id="myForm" autocomplete="off" method="POST">
+      <h3>Log In</h3>
+      <small>provide Email or Phone number</small>
+
+      <label for="email">Email</label>
+      <input type="email" name="email" id="email" />
+      <p class="error">enter valid email address</p>
+
+      <label for="password">Password</label>
+      <input type="password" name="password" id="password" />
+      <p class="error">password must be atleast 8 characters long</p>
+
+      <h4>or</h4>
+
+      <input type="text" name="phone" placeholder="Phone number" />
+      <p class="error">enter 10 digit phone no.</p>
+      <input type="submit" id="submit-btn" value="Log In" />
+
+      <p class="signup">New user? <a href="">Sign Up</a></p>
+    </form>
+  </body>
+</html>
+
+<script>
+  const patterns = {
+    phone: /^[0-9]{10}$/,
+    password: /^[\w!@#$%^&*]{8,20}$/,
+    email: /^([a-z\d\.-]+)@([a-z\d-]+)\.([a-z]{2,8})(\.[a-z]{2,8})?$/,
+  };
+
+  const inputs = document.querySelectorAll("input");
+  const submitBtn = document.getElementById("submit-btn");
+  submitBtn.addEventListener("click", (e) => handleSubmit(e));
+
+  inputs.forEach((input) => {
+    input.addEventListener("keyup", (e) => {
+      validate(e.target, patterns[e.target.attributes.name.value]);
+    });
+  });
+
+  let valid = false;
+
+  function validate(field, regex) {
+    if (regex.test(field.value)) {
+      field.className = "valid";
+      valid = true;
+    } else {
+      field.className = "invalid";
+      valid = false;
+    }
+  }
+
+  function handleSubmit(e) {
+    e.preventDefault();
+    const email = document.forms[0][0].value;
+    const password = document.forms[0][1].value;
+    const phone = document.forms[0][2].value;
+
+    if (
+      (valid && email.length > 0 && password.length > 0) ||
+      (valid && phone.length == 10)
+    ) {
+      document.getElementById("myForm").reset();
+      window.alert("done");
+    } else {
+      window.alert("provide all field values");
+    }
+  }
+</script>
